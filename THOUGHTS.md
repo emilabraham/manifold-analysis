@@ -73,7 +73,7 @@ No starting liquidity needed.
 All the money goes into a pool.
 The ratio of cash between each of the options determines the odds.
 Final payout is not determined until the pool is closed (right before the race starts).
-However, many horse race tracks show odds based on the existing pool ratio should no more bets be accepted after current time. 
+However, many horse race tracks show odds based on the existing pool ratio should no more bets be accepted after current time.
 This differs from fixed-odds betting where the payout is agreed at the time the bet is made.
 
 The mechanism they decided to use is constant-product market maker.

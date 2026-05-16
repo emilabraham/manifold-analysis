@@ -196,6 +196,78 @@ SELECT
   ORDER BY count DESC;
 ```
 
+## Initial Probability
+
+You have the ability to set initial probability at the time you create the market.
+By default it is set to 50%.
+Is there anything interesting if the market is not set to 50% by the creator?
+Does it happen often?
+
+It does look like only a few markets actually set their initial probability.
+
+### Query
+
+Shows the difference between initial probability and final/current probability.
+
+```sql
+SELECT
+	question,
+	initial_probability,
+	p,
+	p - initial_probability AS p_minus_initial
+FROM
+	contracts
+WHERE
+	is_resolved = true
+	AND resolution = 'NO'
+	AND outcome_type = 'BINARY'
+	and initial_probability is not null
+order by
+	p_minus_initial desc;
+```
+
+Shows the quantity of markets that set and did not set an initial probability.
+
+```sql
+SELECT
+	COUNT(CASE WHEN initial_probability = 0.5 THEN 1 END) AS initial_prob_is_half,
+	COUNT(CASE WHEN initial_probability != 0.5 THEN 1 END) AS initial_prob_not_half
+FROM
+	contracts
+WHERE
+	is_resolved = true
+	AND resolution = 'NO'
+	AND outcome_type = 'BINARY';
+```
+
+```
+| initial_prob_is_half | initial_prob_not_half |
+|----------------------|-----------------------|
+| 30575                | 1877                  |
+```
+
+Let's also quickly take a look at the `non_predictive` column.
+I can filter out the ones that have a value of `1`.
+
+```sql
+select
+	count(case when c.non_predictive is null then 1 end) as null_non_predictive,
+	count(case when c.non_predictive = 0 then 1 end) as zero_non_predictive,
+	count(case when c.non_predictive = 1 then 1 end) as one_non_predictive
+from
+	contracts c
+where
+	c.is_resolved = true
+	and c.resolution = 'NO'
+	and c.outcome_type = 'BINARY';
+```
+
+```
+| null_non_predictive | zero_non_predictive | one_non_predictive |
+|---------------------|---------------------|--------------------|
+| 29286               | 3777                | 175                |
+```
+
 ## Resources
 
 ### [Market Mechanics](https://news.manifold.markets/p/above-the-fold-market-mechanics)

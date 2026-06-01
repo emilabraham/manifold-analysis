@@ -1,4 +1,4 @@
-# Manfiold Analysis/Backtesting
+# Manfiold Analysis
 
 This sets up some DBs that contain historical manifold markets data.
 The data can be pulled from [here](https://docs.manifold.markets/data).
